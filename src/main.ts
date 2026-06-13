@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import TitleScene from './scenes/title';
 import GameScene from './scenes/GameScene';
 
-const config = {
+const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     
     scale: {
