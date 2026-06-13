@@ -6,8 +6,9 @@ export default class TitleScene extends Phaser.Scene {
 
 
 create() {
-    this.add.text(300, 200, 'SHooting Game', {
+    this.add.text(400, 300, 'SHooting Game', 
+        {
         fontSize: '32px'
-    })
-   }
+    }) .setOrigin(0.5)
+   } 
 }
