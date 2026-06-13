@@ -10,5 +10,19 @@ create() {
         {
         fontSize: '32px'
     }) .setOrigin(0.5)
-   } 
+   
+
+     this.add.text(
+        400,
+        350,
+        'PRESS SPACE TO START',
+        {
+            fontSize: '24px'
+        }
+    ).setOrigin(0.5)
+
+    this.input.keyboard.once('keydown-SPACE', () => {
+        this.scene.start('GameScene')
+    })
+}
 }
