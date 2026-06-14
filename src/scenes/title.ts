@@ -21,7 +21,7 @@ create() {
         }
     ).setOrigin(0.5)
 
-    this.input.keyboard.once('keydown-SPACE', () => {
+    this.input.keyboard!.once('keydown-SPACE', () => {
         this.scene.start('GameScene')
     })
 }
