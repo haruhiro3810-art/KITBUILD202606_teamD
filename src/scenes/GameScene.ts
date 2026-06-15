@@ -14,5 +14,9 @@ create() {
         fontSize: '32px'
     }
     ).setOrigin(0)
-  }
+
+    this.input.keyboard?.once('keydown-SPACE', () => {
+        this.scene.start('StageScene')
+  })
+}
 }
