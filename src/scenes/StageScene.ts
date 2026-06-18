@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
+import Score from '../UI/score';
 
 export default class StageScene extends Phaser.Scene {
+    private score!: Score;
     player!: Phaser.GameObjects.Rectangle;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-    score!: number ;
-    scoreText!: Phaser.GameObjects.Text;
+    // score!: number ;
+    // scoreText!: Phaser.GameObjects.Text;
 
 
     constructor() {
@@ -17,8 +19,10 @@ create() {
     this.physics.add.existing(this.player);
 
     this.cursors = this.input.keyboard!.createCursorKeys();
-    this.score = 0;
-    this.scoreText = this.add.text(10, 10, 'Score: 0')
+    // this.score = 0;
+    // this.scoreText = this.add.text(10, 10, 'Score: 0')
+    this.score = new Score(this.cursors, this);
+    this.score.create();
   }
 // プレイヤーの移動処理
 update(){
@@ -28,15 +32,16 @@ update(){
     if (this.cursors.left?.isDown && this.player.x -5 >= 20){
         this.player.x -= 5;
     }
-    if (this.cursors.space?.isDown) {
-        this.addScore();
-    }
+    this.score.update();
+    // if (this.cursors.space?.isDown) {
+    //     this.addScore();
+    // }
   }
   // スコアを増やすメソッド
-addScore() {
-    this.score += 100;
-    this.scoreText.setText('Score: ' + this.score);
+// addScore() {
+//     this.score += 100;
+//     this.scoreText.setText('Score: ' + this.score);
     
- }
+//  }
  }
 
