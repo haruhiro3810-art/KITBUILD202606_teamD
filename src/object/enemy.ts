@@ -4,9 +4,9 @@ import Phaser from 'phaser';
 const ENEMY_CONFIG = {
     width: 40,
     height: 40,
-    color: 0xff0000,   // 👿 敵の色は赤
-    speedY: 2,         // 👿 下に向かって進むスピード
-    maxLife: 1         // 👾 設計図通りライフは1
+    color: 0xff0000,   //  敵の色は赤
+    speedY: 2,         //  敵の下に向かう速さ
+    maxLife: 1         
 };
 
 export default class Enemy {
@@ -36,7 +36,7 @@ export default class Enemy {
         this.life++;
     }
 
-    // 💥 爆散する() 【ライフが0かどうか】
+    // 💥 死ぬ() 【ライフが0かどうか】
     public explode(): boolean {
         if (this.life <= 0) {
             this.sprite.destroy(); // 画面から消す
