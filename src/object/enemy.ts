@@ -4,49 +4,43 @@ import Phaser from 'phaser';
 const ENEMY_CONFIG = {
     width: 40,
     height: 40,
-    color: 0xff0000,   //  敵の色は赤
-    speedY: 2,         //  敵の下に向かう速さ
+    color: 0xff0000,   
+    speedX: -3,        
     maxLife: 1         
 };
 
 export default class Enemy {
     public sprite!: Phaser.GameObjects.Rectangle;
     private scene!: Phaser.Scene;
-    public life: number = 0; // 👾 敵の今のライフを入れる変数
+    public life: number = 0; 
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         this.scene = scene;
         
-        // 赤い四角形の敵を作る
+        // 出現位置（x, y）に赤い四角形を作る
         this.sprite = this.scene.add.rectangle(x, y, ENEMY_CONFIG.width, ENEMY_CONFIG.height, ENEMY_CONFIG.color);
-        this.scene.physics.add.existing(this.sprite); // 当たり判定のために物理エンジンに登録
+        this.scene.physics.add.existing(this.sprite); 
 
-        this.life = ENEMY_CONFIG.maxLife; // ライフを1にする
+        this.life = ENEMY_CONFIG.maxLife; 
     }
 
-    // 💥 ライフを減らす()
     public damage() {
-        if (this.life > 0) {
-            this.life--;
-        }
+        if (this.life > 0) { this.life--; }
     }
 
-    // 🟢 ライフを増やす()
     public heal() {
         this.life++;
     }
 
-    // 💥 死ぬ() 【ライフが0かどうか】
     public explode(): boolean {
         if (this.life <= 0) {
-            this.sprite.destroy(); // 画面から消す
-            return true;           // 爆散した！
+            this.sprite.destroy(); 
+            return true;           
         }
-        return false;              // まだ生きてる
+        return false;              
     }
 
-    // 敵を動かす処理
     update() {
-        this.sprite.y += ENEMY_CONFIG.speedY; // 毎フレーム下にちょっとずつ進める
+        this.sprite.x += ENEMY_CONFIG.speedX; 
     }
 }
