@@ -12,6 +12,10 @@ export default class StageScene extends Phaser.Scene {
     gameTime!: number;
     phase!: number;
     phase1Started = false;
+    phase2Started = false;
+    phase3Started = false;
+    phase4Started = false;
+    phase5Started = false;
     spawnTimer!: Phaser.Time.TimerEvent;
 
     constructor() {
@@ -92,20 +96,103 @@ handlePhase() {        //↓フラグ
   this.phase1Started = true;
   this.startPhase1();
   }
-} 
+  if (this.phase === 2 && !this.phase2Started) {
+    this.phase2Started = true;
+    this.startPhase2();
+  }
+  if (this.phase === 3 && !this.phase3Started) {
+    this.phase3Started = true;
+    this.startPhase3();
+  }
+  if (this.phase === 4 && !this.phase4Started) {
+    this.phase4Started = true;
+    this.startPhase4();
+  }
+  if (this.phase === 5 && !this.phase5Started) {
+    this.phase5Started = true;
+    this.startPhase5();
+  }
+}
+
 startPhase1() {
-  this.time.addEvent({
+  this.spawnTimer = this.time.addEvent({
     delay: 3000, // 3秒ごとに敵を出現させる
     loop: true,
     callback: () => {
-      this.spawnEnemies();  
+      this.spawnEnemies1();  
    }
   });
  }
-spawnEnemies() {
+
+startPhase2() {
+  this.spawnTimer.remove();
+  this.spawnTimer = this.time.addEvent({
+    delay: 3000, // 3秒ごとに敵を出現させる
+    loop: true,
+    callback: () => {
+      this.spawnEnemies2();  
+   }
+  });
+ }
+
+startPhase3() {
+  this.spawnTimer.remove();
+  this.spawnTimer = this.time.addEvent({
+    delay: 1000, // 1秒ごとに敵を出現させる
+    loop: true,
+    callback: () => {
+      this.spawnEnemies1();  
+   }
+  });
+ }
+
+startPhase4() {
+  this.spawnTimer.remove();
+  this.spawnTimer = this.time.addEvent({
+    delay: 1000, // 1秒ごとに敵を出現させる
+    loop: true,
+    callback: () => {
+      this.spawnEnemies2();  
+   }
+  });
+ }
+
+startPhase5() {
+  this.spawnTimer.remove();
+
+this.spawnBoss();
+
+  this.spawnTimer = this.time.addEvent({
+    delay: 5000, // 5秒ごとに敵を出現させる
+    loop: true,
+    callback: () => {
+      this.spawnEnemies3();  
+   }
+  });
+ }
+
+spawnEnemies1() {
  for (let i = 0; i < 3; i++) { 
   const enemy = new Player(this.cursors, this); 
   enemy.create();
     }
   }
+spawnEnemies2() {
+  for (let i = 0; i < 5; i++) { 
+    const enemy = new Player(this.cursors, this); 
+    enemy.create();
+      }
+    } 
+ 
+spawnBoss() {
+  const boss = new Player(this.cursors, this); 
+  boss.create();
+}    
+    
+ spawnEnemies3() {
+  for (let i = 0; i < 2; i++) { 
+    const enemy = new Player(this.cursors, this); 
+    enemy.create();
+      }
+    }   
 }
