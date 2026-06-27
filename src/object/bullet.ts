@@ -1,13 +1,8 @@
 import Phaser from 'phaser';
 import Enemy from './enemy.ts';   // 敵のファイルを読み込む
 import Player from '../player/player.ts'; // 🚀 プレイヤーのファイルを新しく読み込む
-import Enemy from './enemy.ts';   // 敵のファイルを読み込む
-import Player from '../player/player.ts'; // 🚀 プレイヤーのファイルを新しく読み込む
 
 const BULLET_CONFIG = {
-    radius: 6,
-    color: 0xfbc531,
-    speedY: -12
     radius: 6,
     color: 0xfbc531,
     speedY: -12
@@ -33,7 +28,6 @@ export default class Bullet {
     }
 
     update() {
-        this.sprite.y += this.speedY;
         this.sprite.y += this.speedY;
     }
 }
