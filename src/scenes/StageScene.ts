@@ -126,6 +126,7 @@ export default class StageScene extends Phaser.Scene {
             this.boss.update();
 
         }
+        this.checkCollision();
 
     }
 
@@ -361,5 +362,69 @@ this.enemies.push(enemy);
     console.log("敵の数:", this.enemies.length);
 
 }
+private checkCollision() {
 
+    // プレイヤー弾と敵
+    for (let i = this.enemies.length - 1; i >= 0; i--) {
+
+        const enemy = this.enemies[i];
+
+        for (let j = this.player.bullets.length - 1; j >= 0; j--) {
+
+            const bullet = this.player.bullets[j];
+
+            if (
+                Phaser.Geom.Intersects.RectangleToRectangle(
+                    bullet.sprite.getBounds(),
+                    enemy.sprite.getBounds()
+                )
+            ) {
+
+                enemy.damage();
+
+                bullet.sprite.destroy();
+                this.player.bullets.splice(j, 1);
+
+                if (enemy.explode()) {
+
+                    this.enemies.splice(i, 1);
+
+                }
+
+                break;
+
+            }
+
+        }
+
+    }
+
+    // プレイヤー弾とボス
+    if (this.boss && this.boss.sprite.active) {
+
+        for (let i = this.player.bullets.length - 1; i >= 0; i--) {
+
+            const bullet = this.player.bullets[i];
+
+            if (
+                Phaser.Geom.Intersects.RectangleToRectangle(
+                    bullet.sprite.getBounds(),
+                    this.boss.sprite.getBounds()
+                )
+            ) {
+
+                this.boss.damage();
+
+                bullet.sprite.destroy();
+                this.player.bullets.splice(i, 1);
+
+                this.boss.explode();
+
+            }
+
+        }
+
+    }
+
+}
 }

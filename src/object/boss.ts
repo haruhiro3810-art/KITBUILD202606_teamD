@@ -92,11 +92,13 @@ export default class Boss {
             return;
         }
 
-        if (this.life > 0) {
-            this.life--;
-        }
+        if (!this.isInvincible && this.life > 0) {
+
+        this.life--;
 
     }
+
+}
 
     // ─── 回復 ───
     public heal() {
