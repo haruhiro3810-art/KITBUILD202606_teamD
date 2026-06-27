@@ -308,15 +308,11 @@ spawnEnemies1() {
 
     for (let i = 0; i < 3; i++) {
 
-        const enemy = new Enemy(
-            this,
-            850,
-            Phaser.Math.Between(50, 550)
-        );
+        const enemy = new Enemy(this,850,200);
 
-        enemy.create();
+enemy.create();
 
-        this.enemies.push(enemy);
+this.enemies.push(enemy);
 
     }
 
@@ -328,15 +324,11 @@ spawnEnemies2() {
 
     for (let i = 0; i < 5; i++) {
 
-        const enemy = new Enemy(
-            this,
-            850,
-            Phaser.Math.Between(50, 550)
-        );
+        const enemy = new Enemy(this,850,200);
 
-        enemy.create();
+enemy.create();
 
-        this.enemies.push(enemy);
+this.enemies.push(enemy);
 
     }
 
@@ -346,11 +338,7 @@ spawnEnemies2() {
 
 spawnBoss() {
 
-    this.boss = new Boss(
-        this,
-        400,
-        -100
-    );
+    this.boss = new Boss(this,400,-100);
 
     this.boss.create();
 
@@ -362,15 +350,11 @@ spawnEnemies3() {
 
     for (let i = 0; i < 2; i++) {
 
-        const enemy = new Enemy(
-            this,
-            850,
-            Phaser.Math.Between(50, 550)
-        );
+        const enemy = new Enemy(this,850,200);
 
-        enemy.create();
+enemy.create();
 
-        this.enemies.push(enemy);
+this.enemies.push(enemy);
 
     }
 
