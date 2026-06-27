@@ -37,7 +37,7 @@ create() {
   
     this.cursors = this.input.keyboard!.createCursorKeys();
   this.player = new Player(this.cursors, this);
-    this.player.create();
+  this.player.create();
 
     this.score = new Score(this.cursors, this);
     this.score.create();
@@ -47,6 +47,9 @@ create() {
     this.background = this.add.image(400, 300, "background");
     this.background2 = this.add.image(400, this.background.y - this.background.height, "background2") 
     
+    this.background.setDepth(0)
+    this.background2.setDepth(0)
+
     this.gameTime = 0;
 
     this.phase = 0;
@@ -71,7 +74,16 @@ update(_time: number, delta: number){
   this.phaseUpdate();
 
   this.handlePhase();
-   }
+
+  for (let i = this.enemies.length - 1; i >= 0; i--) {
+    const enemy = this.enemies[i];
+    enemy.update();
+    //if (enemy.sprite.y > 650) {
+      //enemy.sprite.destroy();
+      //this.enemies.splice(i, 1);
+    //}
+  }
+  }
   
 phaseUpdate() {
   if (this.gameTime < 6) {
@@ -173,27 +185,36 @@ this.spawnBoss();
  }
 
 spawnEnemies1() {
- for (let i = 0; i < 3; i++) { 
+ for (let i = 0; i < 3; i++) {  
   const enemy = new Player(this.cursors, this); 
   enemy.create();
+
+  this.enemies.push(enemy);
     }
+  console.log("敵の数:", this.enemies.length);  
   }
 spawnEnemies2() {
   for (let i = 0; i < 5; i++) { 
     const enemy = new Player(this.cursors, this); 
     enemy.create();
+    this.enemies.push(enemy);
       }
+      console.log("敵の数:", this.enemies.length);  
     } 
  
 spawnBoss() {
   const boss = new Player(this.cursors, this); 
   boss.create();
+  this.enemies.push(boss);
+  console.log("敵の数:", this.enemies.length);  
 }    
     
  spawnEnemies3() {
   for (let i = 0; i < 2; i++) { 
     const enemy = new Player(this.cursors, this); 
     enemy.create();
+    this.enemies.push(enemy);
       }
+    console.log("敵の数:", this.enemies.length);  
     }   
 }
