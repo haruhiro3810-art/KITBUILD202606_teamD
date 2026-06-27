@@ -17,6 +17,7 @@ export default class StageScene extends Phaser.Scene {
     phase4Started = false;
     phase5Started = false;
     spawnTimer!: Phaser.Time.TimerEvent;
+    enemies: Player[] = [];
 
     constructor() {
         super('StageScene')
