@@ -3,15 +3,19 @@ import Score from '../UI/score';
 import Player from '../player/player';
 import Enemy from '../object/enemy';
 import Boss from '../object/boss';
+import EnemyBullet from '../object/EnemyBullet';
 
 export default class StageScene extends Phaser.Scene {
+
     player!: Player;
     boss!: Boss;
 
     private score!: Score;
+
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
     scrollSpeed!: number;
+
     background!: Phaser.GameObjects.Image;
     background2!: Phaser.GameObjects.Image;
 
@@ -28,39 +32,40 @@ export default class StageScene extends Phaser.Scene {
 
     enemies: Enemy[] = [];
 
+    // ★敵弾をSceneで一括管理
+    enemyBullets: EnemyBullet[] = [];
+
     constructor() {
+
         super('StageScene');
+
     }
 
-    // 背景画像の読み込み
     preload(): void {
 
         console.log("StageScene preload");
 
         this.load.setBaseURL('/');
 
-        this.load.image("background", "assets/background.png");
-        this.load.image("background2", "assets/background2.png");
+        this.load.image("background","assets/background.png");
+        this.load.image("background2","assets/background2.png");
 
     }
 
-    // プレイヤーの作成とスコアの初期化
     create() {
 
         console.log("StageScene");
 
         this.cursors = this.input.keyboard!.createCursorKeys();
 
-        this.player = new Player(this.cursors, this);
+        this.player = new Player(this.cursors,this);
         this.player.create();
 
-        this.score = new Score(this.cursors, this);
+        this.score = new Score(this.cursors,this);
         this.score.create();
 
-        // 背景画像の初期位置とスクロール速度を設定
         this.scrollSpeed = 120;
 
-        // 背景画像を追加
         this.background = this.add.image(
             400,
             300,
@@ -77,30 +82,34 @@ export default class StageScene extends Phaser.Scene {
         this.background2.setDepth(0);
 
         this.gameTime = 0;
-
         this.phase = 0;
+
+        this.enemyBullets = [];
 
     }
 
-    // プレイヤーの移動処理
-    update(_time: number, delta: number) {
+    update(_time:number,delta:number) {
 
         this.score.update();
 
         this.player.update();
 
-        // 背景画像のスクロール処理
+        // 背景スクロール
         this.background.y += this.scrollSpeed * (delta / 1000);
         this.background2.y += this.scrollSpeed * (delta / 1000);
 
         if (this.background.y >= 1140) {
+
             this.background.y =
                 this.background2.y - this.background2.height;
+
         }
 
         if (this.background2.y >= 1140) {
+
             this.background2.y =
                 this.background.y - this.background.height;
+
         }
 
         this.gameTime = this.time.now / 1000;
@@ -108,29 +117,42 @@ export default class StageScene extends Phaser.Scene {
         this.phaseUpdate();
 
         this.handlePhase();
-                for (let i = this.enemies.length - 1; i >= 0; i--) {
 
-            const enemy = this.enemies[i];
+        // 敵更新
+        for (let i = this.enemies.length - 1; i >= 0; i--) {
 
-            enemy.update();
-
-            //if (enemy.sprite.y > 650) {
-            //    enemy.sprite.destroy();
-            //    this.enemies.splice(i, 1);
-            //}
+            this.enemies[i].update();
 
         }
 
+        // ボス更新
         if (this.boss) {
 
             this.boss.update();
 
         }
+
+        // ★敵弾更新（敵が死んでも飛び続ける）
+        for (let i = this.enemyBullets.length - 1; i >= 0; i--) {
+
+            const bullet = this.enemyBullets[i];
+
+            bullet.update();
+
+            if (bullet.sprite.y > 650) {
+
+                bullet.sprite.destroy();
+
+                this.enemyBullets.splice(i,1);
+
+            }
+
+        }
+
         this.checkCollision();
 
     }
-
-    phaseUpdate() {
+        phaseUpdate() {
 
         if (this.gameTime < 6) {
 
@@ -168,7 +190,6 @@ export default class StageScene extends Phaser.Scene {
     // 敵の出現処理
     handlePhase() {
 
-        //↓フラグ
         if (this.phase === 1 && !this.phase1Started) {
 
             this.phase1Started = true;
@@ -210,161 +231,167 @@ export default class StageScene extends Phaser.Scene {
         }
 
     }
+
     startPhase1() {
 
-    this.spawnTimer = this.time.addEvent({
+        this.spawnTimer = this.time.addEvent({
 
-        delay: 3000, // 3秒ごとに敵を出現させる
-        loop: true,
+            delay: 3000,
 
-        callback: () => {
+            loop: true,
 
-            this.spawnEnemies1();
+            callback: () => {
 
-        }
+                this.spawnEnemies1();
 
-    });
+            }
 
-}
-
-startPhase2() {
-
-    this.spawnTimer.remove();
-
-    this.spawnTimer = this.time.addEvent({
-
-        delay: 3000, // 3秒ごとに敵を出現させる
-        loop: true,
-
-        callback: () => {
-
-            this.spawnEnemies2();
-
-        }
-
-    });
-
-}
-
-startPhase3() {
-
-    this.spawnTimer.remove();
-
-    this.spawnTimer = this.time.addEvent({
-
-        delay: 1000, // 1秒ごとに敵を出現させる
-        loop: true,
-
-        callback: () => {
-
-            this.spawnEnemies1();
-
-        }
-
-    });
-
-}
-
-startPhase4() {
-
-    this.spawnTimer.remove();
-
-    this.spawnTimer = this.time.addEvent({
-
-        delay: 1000, // 1秒ごとに敵を出現させる
-        loop: true,
-
-        callback: () => {
-
-            this.spawnEnemies2();
-
-        }
-
-    });
-
-}
-
-startPhase5() {
-
-    this.spawnTimer.remove();
-
-    this.spawnBoss();
-
-    this.spawnTimer = this.time.addEvent({
-
-        delay: 5000, // 5秒ごとに敵を出現させる
-        loop: true,
-
-        callback: () => {
-
-            this.spawnEnemies3();
-
-        }
-
-    });
-
-}
-
-spawnEnemies1() {
-
-    for (let i = 0; i < 3; i++) {
-
-        const enemy = new Enemy(this,850,200);
-
-enemy.create();
-
-this.enemies.push(enemy);
+        });
 
     }
 
-    console.log("敵の数:", this.enemies.length);
+    startPhase2() {
 
-}
+        this.spawnTimer.remove();
 
-spawnEnemies2() {
+        this.spawnTimer = this.time.addEvent({
 
-    for (let i = 0; i < 5; i++) {
+            delay: 3000,
 
-        const enemy = new Enemy(this,850,200);
+            loop: true,
 
-enemy.create();
+            callback: () => {
 
-this.enemies.push(enemy);
+                this.spawnEnemies2();
 
-    }
+            }
 
-    console.log("敵の数:", this.enemies.length);
-
-}
-
-spawnBoss() {
-
-    this.boss = new Boss(this,400,-100);
-
-    this.boss.create();
-
-    console.log("ボス出現");
-
-}
-
-spawnEnemies3() {
-
-    for (let i = 0; i < 2; i++) {
-
-        const enemy = new Enemy(this,850,200);
-
-enemy.create();
-
-this.enemies.push(enemy);
+        });
 
     }
 
-    console.log("敵の数:", this.enemies.length);
+    startPhase3() {
 
-}
-private checkCollision() {
+        this.spawnTimer.remove();
 
-    // プレイヤー弾と敵
+        this.spawnTimer = this.time.addEvent({
+
+            delay: 1000,
+
+            loop: true,
+
+            callback: () => {
+
+                this.spawnEnemies1();
+
+            }
+
+        });
+
+    }
+
+    startPhase4() {
+
+        this.spawnTimer.remove();
+
+        this.spawnTimer = this.time.addEvent({
+
+            delay: 1000,
+
+            loop: true,
+
+            callback: () => {
+
+                this.spawnEnemies2();
+
+            }
+
+        });
+
+    }
+
+    startPhase5() {
+
+        this.spawnTimer.remove();
+
+        this.spawnBoss();
+
+        this.spawnTimer = this.time.addEvent({
+
+            delay: 5000,
+
+            loop: true,
+
+            callback: () => {
+
+                this.spawnEnemies3();
+
+            }
+
+        });
+
+    }
+
+    spawnEnemies1() {
+
+        for (let i = 0; i < 3; i++) {
+
+            const enemy = new Enemy(this, 850, 200);
+
+            enemy.create();
+
+            this.enemies.push(enemy);
+
+        }
+
+        console.log("敵の数:", this.enemies.length);
+
+    }
+
+    spawnEnemies2() {
+
+        for (let i = 0; i < 5; i++) {
+
+            const enemy = new Enemy(this, 850, 200);
+
+            enemy.create();
+
+            this.enemies.push(enemy);
+
+        }
+
+        console.log("敵の数:", this.enemies.length);
+
+    }
+
+    spawnBoss() {
+
+        this.boss = new Boss(this, 400, -100);
+
+        this.boss.create();
+
+        console.log("ボス出現");
+
+    }
+
+    spawnEnemies3() {
+
+        for (let i = 0; i < 2; i++) {
+
+            const enemy = new Enemy(this, 850, 200);
+
+            enemy.create();
+
+            this.enemies.push(enemy);
+
+        }
+
+        console.log("敵の数:", this.enemies.length);
+
+    }
+    private checkCollision() {
+
+    // ─── プレイヤー弾と敵 ───
     for (let i = this.enemies.length - 1; i >= 0; i--) {
 
         const enemy = this.enemies[i];
@@ -389,6 +416,8 @@ private checkCollision() {
 
                     this.enemies.splice(i, 1);
 
+                    this.score.addScore();
+
                 }
 
                 break;
@@ -399,8 +428,8 @@ private checkCollision() {
 
     }
 
-    // プレイヤー弾とボス
-    if (this.boss && this.boss.sprite.active) {
+    // ─── プレイヤー弾とボス ───
+    if (this.boss && this.boss.isAlive) {
 
         for (let i = this.player.bullets.length - 1; i >= 0; i--) {
 
@@ -416,9 +445,12 @@ private checkCollision() {
                 this.boss.damage();
 
                 bullet.sprite.destroy();
+
                 this.player.bullets.splice(i, 1);
 
                 this.boss.explode();
+
+                break;
 
             }
 
@@ -426,5 +458,68 @@ private checkCollision() {
 
     }
 
-}
+    // ─── ボス弾とプレイヤー ───
+    if (this.boss && this.boss.isAlive) {
+
+        for (let i = this.boss.bullets.length - 1; i >= 0; i--) {
+
+            const bullet = this.boss.bullets[i];
+
+            if (
+                Phaser.Geom.Intersects.RectangleToRectangle(
+                    bullet.sprite.getBounds(),
+                    this.player.player.getBounds()
+                )
+            ) {
+
+                this.player.damage();
+
+                bullet.sprite.destroy();
+
+                this.boss.bullets.splice(i, 1);
+
+                console.log("Player HP:", this.player.life);
+
+                if (!this.player.isAlive()) {
+
+                    console.log("GAME OVER");
+
+                }
+
+            }
+
+        }
+
+    }
+
+    // ─── 敵弾とプレイヤー ───
+    for (let i = this.enemyBullets.length - 1; i >= 0; i--) {
+
+        const bullet = this.enemyBullets[i];
+
+        if (
+            Phaser.Geom.Intersects.RectangleToRectangle(
+                bullet.sprite.getBounds(),
+                this.player.player.getBounds()
+            )
+        ) {
+
+            this.player.damage();
+
+            bullet.sprite.destroy();
+
+            this.enemyBullets.splice(i, 1);
+
+            console.log("Player HP:", this.player.life);
+
+            if (!this.player.isAlive()) {
+
+                console.log("GAME OVER");
+
+            }
+
+        }
+
+    }
+    }
 }
