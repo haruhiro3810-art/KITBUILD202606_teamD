@@ -27,6 +27,7 @@ export default class Player {
 
     create() {
         this.player = this.scene.add.rectangle(100, 500, PLAYER_CONFIG.width, PLAYER_CONFIG.height, PLAYER_CONFIG.color);
+        this.player.setDepth(50)
         this.scene.physics.add.existing(this.player);
 
         this.bullets = [];
