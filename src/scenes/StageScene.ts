@@ -6,7 +6,7 @@ import Boss from '../object/boss';
 
 export default class StageScene extends Phaser.Scene {
     player!: Player;
-    boss!: Boss;
+    boss: Boss| null;
 
     private score!: Score;
     cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -26,10 +26,13 @@ export default class StageScene extends Phaser.Scene {
 
     spawnTimer!: Phaser.Time.TimerEvent;
 
-    enemies: Enemy[] = [];
+    enemies!: Enemy[] 
+
+    starttime!: number;
 
     constructor() {
         super('StageScene');
+        this.boss = null;
     }
 
     // 背景画像の読み込み
@@ -46,6 +49,8 @@ export default class StageScene extends Phaser.Scene {
 
     // プレイヤーの作成とスコアの初期化
     create() {
+
+        this.starttime = this.time.now
 
         console.log("StageScene");
 
@@ -80,6 +85,15 @@ export default class StageScene extends Phaser.Scene {
 
         this.phase = 0;
 
+        this.enemies = [];
+
+        this.phase1Started = false;
+        this.phase2Started = false;
+        this.phase3Started = false;
+        this.phase4Started = false;
+        this.phase5Started = false;
+        
+        this.boss = null;
     }
 
     // プレイヤーの移動処理
@@ -103,7 +117,7 @@ export default class StageScene extends Phaser.Scene {
                 this.background.y - this.background.height;
         }
 
-        this.gameTime = this.time.now / 1000;
+        this.gameTime = (this.time.now - this.starttime) / 1000;
 
         this.phaseUpdate();
 
@@ -418,7 +432,9 @@ private checkCollision() {
                 bullet.sprite.destroy();
                 this.player.bullets.splice(i, 1);
 
-                this.boss.explode();
+               if(this.boss.explode()) {
+                 this.scene.start('ClearScene');
+               }
 
             }
 
