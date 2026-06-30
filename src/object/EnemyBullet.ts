@@ -10,8 +10,7 @@ const ENEMY_BULLET_CONFIG = {
 
 export default class EnemyBullet {
 
-    public sprite!: Phaser.GameObjects.Rectangle;
-
+   public sprite!: Phaser.Physics.Arcade.Sprite;
     private scene!: Phaser.Scene;
 
     private x: number;
@@ -29,14 +28,12 @@ export default class EnemyBullet {
     // ─── 敵弾生成 ───
     create() {
 
-        this.sprite = this.scene.add.rectangle(
-            this.x,
-            this.y,
-            ENEMY_BULLET_CONFIG.width,
-            ENEMY_BULLET_CONFIG.height,
-            ENEMY_BULLET_CONFIG.color
-        );
-
+        this.sprite = this.scene.physics.add.sprite(
+    this.x,
+    this.y,
+    "enemyBullet"
+);
+this.sprite.setScale(0.15);
         this.scene.physics.add.existing(this.sprite);
 
     }

@@ -25,8 +25,7 @@ const BOSS_CONFIG = {
 
 export default class Boss {
 
-    public sprite!: Phaser.GameObjects.Rectangle;
-
+    public sprite!: Phaser.Physics.Arcade.Sprite;
     private scene!: Phaser.Scene;
 
     private x: number;
@@ -62,14 +61,12 @@ export default class Boss {
     // ─── ボス生成 ───
     create() {
 
-        this.sprite = this.scene.add.rectangle(
-            this.x,
-            this.y,
-            BOSS_CONFIG.width,
-            BOSS_CONFIG.height,
-            BOSS_CONFIG.color
-        );
-
+        this.sprite = this.scene.physics.add.sprite(
+    this.x,
+    this.y,
+    "boss"
+);
+this.sprite.setScale(0.8);
         this.scene.physics.add.existing(this.sprite);
 
         this.life = BOSS_CONFIG.maxLife;

@@ -13,7 +13,7 @@ const PLAYER_CONFIG = {
 
 export default class Player {
 
-    public player!: Phaser.GameObjects.Rectangle;
+    public player!: Phaser.Physics.Arcade.Sprite;
 
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
     private scene!: Phaser.Scene;
@@ -33,7 +33,12 @@ export default class Player {
     }
 
     create() {
-        this.player = this.scene.add.rectangle(100, 500, PLAYER_CONFIG.width, PLAYER_CONFIG.height, PLAYER_CONFIG.color);
+        this.player = this.scene.physics.add.sprite(
+    100,
+    500,
+    "player"
+);
+this.player.setScale(0.15);
         this.player.setDepth(50)
 
         this.scene.physics.add.existing(this.player);

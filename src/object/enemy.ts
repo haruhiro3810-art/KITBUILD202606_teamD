@@ -17,7 +17,7 @@ const ENEMY_CONFIG = {
 
 export default class Enemy {
 
-    public sprite!: Phaser.GameObjects.Rectangle;
+    public sprite!: Phaser.Physics.Arcade.Sprite;
 
     private scene!: Phaser.Scene;
 
@@ -46,14 +46,12 @@ export default class Enemy {
     // ─── 敵を作成 ───
     create() {
 
-        this.sprite = this.scene.add.rectangle(
-            this.x,
-            this.y,
-            ENEMY_CONFIG.width,
-            ENEMY_CONFIG.height,
-            ENEMY_CONFIG.color
-        );
-
+        this.sprite = this.scene.physics.add.sprite(
+    this.x,
+    this.y,
+    "enemy"
+);
+this.sprite.setScale(0.15);
         this.scene.physics.add.existing(this.sprite);
 
         this.life = ENEMY_CONFIG.maxLife;
