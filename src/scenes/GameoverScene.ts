@@ -1,12 +1,12 @@
 import Phaser from 'phaser'; 
-export default class ClearScene extends Phaser.Scene {
+export default class GameoverScene extends Phaser.Scene {
     constructor() {
-        super('ClearScene')
+        super('GameoverScene')
     }
 
 
 create() {
-    this.add.text(400, 300, 'GAME CLEAR!', 
+    this.add.text(400, 300, 'GAME OVER', 
         {
         fontSize: '32px'
     }) .setOrigin(0.5)

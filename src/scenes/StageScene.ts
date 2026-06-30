@@ -8,7 +8,7 @@ import EnemyBullet from '../object/EnemyBullet';
 export default class StageScene extends Phaser.Scene {
 
     player!: Player;
-    boss!: Boss;
+    boss: Boss| null;
 
     private score!: Score;
 
@@ -30,7 +30,9 @@ export default class StageScene extends Phaser.Scene {
 
     spawnTimer!: Phaser.Time.TimerEvent;
 
-    enemies: Enemy[] = [];
+    enemies!: Enemy[] 
+
+    starttime!: number;
 
     // ★敵弾をSceneで一括管理
     enemyBullets: EnemyBullet[] = [];
@@ -39,6 +41,7 @@ export default class StageScene extends Phaser.Scene {
 
         super('StageScene');
 
+        this.boss = null;
     }
 
     preload(): void {
@@ -53,6 +56,8 @@ export default class StageScene extends Phaser.Scene {
     }
 
     create() {
+
+        this.starttime = this.time.now
 
         console.log("StageScene");
 
@@ -84,8 +89,17 @@ export default class StageScene extends Phaser.Scene {
         this.gameTime = 0;
         this.phase = 0;
 
-        this.enemyBullets = [];
+        this.enemies = [];
 
+        this.phase1Started = false;
+        this.phase2Started = false;
+        this.phase3Started = false;
+        this.phase4Started = false;
+        this.phase5Started = false;
+        
+        this.boss = null;
+
+        this.enemyBullets = [];
     }
 
     update(_time:number,delta:number) {
@@ -98,21 +112,21 @@ export default class StageScene extends Phaser.Scene {
         this.background.y += this.scrollSpeed * (delta / 1000);
         this.background2.y += this.scrollSpeed * (delta / 1000);
 
-        if (this.background.y >= 1140) {
+        if (this.background.y >= 1300) {
 
             this.background.y =
                 this.background2.y - this.background2.height;
 
         }
 
-        if (this.background2.y >= 1140) {
+        if (this.background2.y >= 1300) {
 
             this.background2.y =
                 this.background.y - this.background.height;
 
         }
 
-        this.gameTime = this.time.now / 1000;
+        this.gameTime = (this.time.now - this.starttime) / 1000;
 
         this.phaseUpdate();
 
@@ -151,6 +165,9 @@ export default class StageScene extends Phaser.Scene {
 
         this.checkCollision();
 
+        if (!this.player.isAlive()) {
+    this.scene.start("GameoverScene");
+        }
     }
         phaseUpdate() {
 
@@ -448,7 +465,9 @@ export default class StageScene extends Phaser.Scene {
 
                 this.player.bullets.splice(i, 1);
 
-                this.boss.explode();
+               if(this.boss.explode()) {
+                 this.scene.start('ClearScene');
+               }
 
                 break;
 
