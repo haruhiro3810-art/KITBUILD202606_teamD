@@ -10,7 +10,7 @@ const PLAYER_BULLET_CONFIG = {
 
 export default class PlayerBullet {
 
-    public sprite!: Phaser.GameObjects.Rectangle;
+    public sprite!: Phaser.Physics.Arcade.Sprite;
 
     private scene!: Phaser.Scene;
 
@@ -29,15 +29,13 @@ export default class PlayerBullet {
     // ─── プレイヤー弾生成 ───
     create() {
 
-        this.sprite = this.scene.add.rectangle(
-            this.x,
-            this.y,
-            PLAYER_BULLET_CONFIG.width,
-            PLAYER_BULLET_CONFIG.height,
-            PLAYER_BULLET_CONFIG.color
-        );
-
+        this.sprite = this.scene.physics.add.sprite(
+    this.x,
+    this.y,
+    "playerBullet"
+);
         this.scene.physics.add.existing(this.sprite);
+        this.sprite.setScale(0.10);
 
     }
 

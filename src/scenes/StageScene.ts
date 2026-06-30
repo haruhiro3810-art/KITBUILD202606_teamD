@@ -52,6 +52,11 @@ export default class StageScene extends Phaser.Scene {
 
         this.load.image("background","assets/background.png");
         this.load.image("background2","assets/background2.png");
+        this.load.image("player", "assets/player.png");
+this.load.image("enemy", "assets/enemy.png");
+this.load.image("boss", "assets/boss.png");
+this.load.image("playerBullet", "assets/playerBullet.png");
+this.load.image("enemyBullet", "assets/enemyBullet.png");
 
     }
 
@@ -351,7 +356,7 @@ export default class StageScene extends Phaser.Scene {
 
     spawnEnemies1() {
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 1; i++) {
 
             const enemy = new Enemy(this, 850, 200);
 
@@ -367,7 +372,7 @@ export default class StageScene extends Phaser.Scene {
 
     spawnEnemies2() {
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 1; i++) {
 
             const enemy = new Enemy(this, 850, 200);
 
@@ -393,7 +398,7 @@ export default class StageScene extends Phaser.Scene {
 
     spawnEnemies3() {
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
 
             const enemy = new Enemy(this, 850, 200);
 
