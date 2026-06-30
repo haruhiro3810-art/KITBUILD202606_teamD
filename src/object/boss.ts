@@ -17,7 +17,7 @@ const BOSS_CONFIG = {
     rightLimit: 650,
 
     // ライフ
-    maxLife: 10,
+    maxLife: 50,
 
     // 弾
     fireInterval: 90
