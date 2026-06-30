@@ -3,6 +3,7 @@ import TitleScene from './scenes/title';
 import GameScene from './scenes/GameScene';
 import StageScene from './scenes/StageScene';
 import ClearScene from './scenes/ClearScene';
+import GameoverScene from './scenes/GameoverScene'
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
     
@@ -23,7 +24,8 @@ const config: Phaser.Types.Core.GameConfig = {
     scene: [TitleScene,
             GameScene,
             StageScene,
-            ClearScene
+            ClearScene,
+            GameoverScene
     ]
 }
 

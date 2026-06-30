@@ -10,6 +10,7 @@ export default class Score  {
     create() {
         this.score = 0;
         this.scoreText = this.scene.add.text(10, 10, 'score: 0');
+        this.scoreText.setDepth(50);
     }
     update() {
         if (this.cursors.space?.isDown) {
