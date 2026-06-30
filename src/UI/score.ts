@@ -13,9 +13,9 @@ export default class Score  {
         this.scoreText.setDepth(50);
     }
     update() {
-        if (this.cursors.space?.isDown) {
-            this.addScore();
-        }
+        //if (this.cursors.space?.isDown) {
+           // this.addScore();
+        //}
     }
     addScore() {
         this.score += 100;
