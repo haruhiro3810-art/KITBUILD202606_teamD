@@ -1,17 +1,24 @@
 import Phaser from 'phaser';
+import EnemyBullet from './EnemyBullet';
 
 // ─── ⚙️ 敵の設定 ───
 const ENEMY_CONFIG = {
     width: 40,
     height: 40,
     color: 0xff0000,
+
     speedX: -3,
-    maxLife: 1
+
+    maxLife: 1,
+
+    // 弾
+    fireInterval: 90
 };
 
 export default class Enemy {
 
     public sprite!: Phaser.GameObjects.Rectangle;
+
     private scene!: Phaser.Scene;
 
     // 初期座標
@@ -23,6 +30,9 @@ export default class Enemy {
 
     // ライフ
     public life: number = 0;
+
+    // 発射タイマー
+    private fireTimer: number = 0;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
 
@@ -49,6 +59,8 @@ export default class Enemy {
         this.life = ENEMY_CONFIG.maxLife;
 
         this.isAlive = true;
+
+        this.fireTimer = 0;
 
     }
 
@@ -87,10 +99,38 @@ export default class Enemy {
 
     }
 
+    // ─── 弾を撃つ ───
+    private shoot() {
+
+        const bullet = new EnemyBullet(
+            this.scene,
+            this.sprite.x,
+            this.sprite.y
+        );
+
+        bullet.create();
+
+        // StageSceneのenemyBulletsへ追加
+        (this.scene as any).enemyBullets.push(bullet);
+
+    }
+
     // ─── 毎フレーム処理 ───
     update() {
 
+        // 左へ移動
         this.sprite.x += ENEMY_CONFIG.speedX;
+
+        // 発射タイマー
+        this.fireTimer++;
+
+        if (this.fireTimer >= ENEMY_CONFIG.fireInterval) {
+
+            this.shoot();
+
+            this.fireTimer = 0;
+
+        }
 
     }
 
