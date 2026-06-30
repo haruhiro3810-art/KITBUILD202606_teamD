@@ -112,14 +112,14 @@ export default class StageScene extends Phaser.Scene {
         this.background.y += this.scrollSpeed * (delta / 1000);
         this.background2.y += this.scrollSpeed * (delta / 1000);
 
-        if (this.background.y >= 1140) {
+        if (this.background.y >= 1300) {
 
             this.background.y =
                 this.background2.y - this.background2.height;
 
         }
 
-        if (this.background2.y >= 1140) {
+        if (this.background2.y >= 1300) {
 
             this.background2.y =
                 this.background.y - this.background.height;
