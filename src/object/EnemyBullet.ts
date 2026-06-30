@@ -5,7 +5,7 @@ const ENEMY_BULLET_CONFIG = {
     width: 10,
     height: 20,
     color: 0xffff00,
-    speedY: 5
+    speedY: 8
 };
 
 export default class EnemyBullet {
@@ -33,7 +33,7 @@ export default class EnemyBullet {
     this.y,
     "enemyBullet"
 );
-this.sprite.setScale(0.10);
+this.sprite.setScale(0.08);
         this.scene.physics.add.existing(this.sprite);
 
     }

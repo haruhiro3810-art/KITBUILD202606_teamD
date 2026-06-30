@@ -17,7 +17,7 @@ const BOSS_CONFIG = {
     rightLimit: 650,
 
     // ライフ
-    maxLife: 50,
+    maxLife: 80,
 
     // 弾
     fireInterval: 90
@@ -66,7 +66,7 @@ export default class Boss {
     this.y,
     "boss"
 );
-this.sprite.setScale(0.15);
+this.sprite.setScale(0.3);
         this.scene.physics.add.existing(this.sprite);
 
         this.life = BOSS_CONFIG.maxLife;

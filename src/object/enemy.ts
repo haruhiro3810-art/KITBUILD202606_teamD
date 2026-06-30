@@ -9,7 +9,7 @@ const ENEMY_CONFIG = {
 
     speedX: -3,
 
-    maxLife: 1,
+    maxLife: 6,
 
     // 弾
     fireInterval: 90
