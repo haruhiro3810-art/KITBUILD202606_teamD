@@ -35,6 +35,7 @@ export default class PlayerBullet {
     "playerBullet"
 );
         this.scene.physics.add.existing(this.sprite);
+        this.sprite.setScale(0.10);
 
     }
 

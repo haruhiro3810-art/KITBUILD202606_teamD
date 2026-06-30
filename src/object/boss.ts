@@ -66,7 +66,7 @@ export default class Boss {
     this.y,
     "boss"
 );
-this.sprite.setScale(0.8);
+this.sprite.setScale(0.15);
         this.scene.physics.add.existing(this.sprite);
 
         this.life = BOSS_CONFIG.maxLife;

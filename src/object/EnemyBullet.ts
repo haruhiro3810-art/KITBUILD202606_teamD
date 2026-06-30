@@ -33,7 +33,7 @@ export default class EnemyBullet {
     this.y,
     "enemyBullet"
 );
-this.sprite.setScale(0.15);
+this.sprite.setScale(0.10);
         this.scene.physics.add.existing(this.sprite);
 
     }

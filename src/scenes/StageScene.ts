@@ -356,7 +356,7 @@ this.load.image("enemyBullet", "assets/enemyBullet.png");
 
     spawnEnemies1() {
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 1; i++) {
 
             const enemy = new Enemy(this, 850, 200);
 
@@ -372,7 +372,7 @@ this.load.image("enemyBullet", "assets/enemyBullet.png");
 
     spawnEnemies2() {
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 1; i++) {
 
             const enemy = new Enemy(this, 850, 200);
 
@@ -398,7 +398,7 @@ this.load.image("enemyBullet", "assets/enemyBullet.png");
 
     spawnEnemies3() {
 
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 1; i++) {
 
             const enemy = new Enemy(this, 850, 200);
 
