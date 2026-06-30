@@ -142,6 +142,9 @@ export default class StageScene extends Phaser.Scene {
         }
         this.checkCollision();
 
+        if (!this.player.isAlive()) {
+    this.scene.start("GameoverScene");
+        }
     }
 
     phaseUpdate() {
